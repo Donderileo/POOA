@@ -1,13 +1,18 @@
-# De quem é a responsabilidade?
+# Princípio da responsabilidade única
 
 
 #### Autor: Leonardo Donderi Rodrigues.
 
 ## SOLID
 
-O princípio que será tratado neste artigo, junto com outros 4 foram identificados por Robert C. Martin, por volta do ano 2000 e agrupados no acrônimo SOLID por Michael Feathers, após observar que os cinco princípios poderiam se encaixar nesta palavra.
+O princípio que será tratado neste artigo, é o primeiro dos cinco princípios da programação orientada a objetos,identificados por Robert C. Martin, por volta do ano 2000 e agrupados no acrônimo SOLID por Michael Feathers, após observar que os cinco princípios poderiam se encaixar nesta palavra.
 
-        S — Single Responsiblity Principle (Princípio da responsabilidade única)
+
+Esses princípios auxiliam o programador a escrever códigos mais limpos, com responsabilidades separadas e acoplamentos reduzidos. O que garante uma manutenção mais simples e possibilita o reaproveitamento do código.
+
+São eles:
+
+        S — Single Responsibility Principle (Princípio da responsabilidade única)
         O — Open-Closed Principle (Princípio Aberto-Fechado)
         L — Liskov Substitution Principle (Princípio da substituição de Liskov)
         I — Interface Segregation Principle (Princípio da Segregação da Interface)
@@ -21,9 +26,9 @@ Esses princípios quando bem aplicados evitam uma série de problemas:
         Duplicação de código, uma alteração precisa ser feita em N pontos;
         Fragilidade, o código quebra facilmente em vários pontos após alguma mudança.
 
-## Principio da responsabilidade Única
+## Princípio da responsabilidade Única
 
-Contrariando o conceito de classe "faz tudo" (comumente chamada de God Class), o príncipio da responsabilidade única tem como base que todas as classes devem possuir uma e somente uma responsabilidade, ou seguindo a definição:
+Contrariando o conceito de classe "faz tudo" (comumente chamada de God Class), o princípio da responsabilidade única tem como base que todas as classes devem possuir uma e somente uma responsabilidade, ou seguindo a definição:
 
         "Uma classe deve ter um, e somente um, motivo para mudar."
 
@@ -32,6 +37,22 @@ Códigos que fogem a esse princípio podem funcionar perfeitamente, mas por exis
 Imagine o seguinte cenário, uma academia possui um sistema que controla a quantidade de alunos na academia (inserção e remoção de alunos) e calcula o lucro bruto com base na quantidade de alunos matriculados.
 
 Sem pensar nos principios SOLID, criamos uma [God Class](https://medium.com/@carlos.ariel.mamani/the-god-object-or-god-class-anti-pattern-bfb8c15eb513):
+
+#### Todos os códigos deste artigo foram feitos na linguagem Python, mas o foco aqui é a Orientação a objetos e não a linguagem.
+
+Usaremos uma classe `Aluno` apenas como auxiliar, para agrupar as informações do aluno e formatar a exibição de seus atributos.
+
+```py
+class Aluno:
+    def __init__(self, nome, idade):
+        self.nome = nome
+        self.idade = idade
+
+    def imprime(self):
+        print('Aluno:')
+        print(f'  Nome: {self.nome}')
+        print(f'  Idade: {self.idade} \n')
+```
 
 ```py     
 
@@ -62,23 +83,23 @@ class Academia:
  
 ```
 
-Note que a classe possue metodos que executam as funções descritas anteriormente.
+Note que a classe possui métodos que executam as funções descritas anteriormente.
 
 * __init__ : Construtor da classe, recebe o nome da academia e a constrói com lucro = 0 e um dicionário de alunos vazio.
-* adiciona_aluno(): Método que adiciona um aluno com nome e idade a academia e recalcula o lucro da academia (metodo calcula_lucro)
+* adiciona_aluno(): Método que adiciona um aluno com nome e idade a academia e recalcula o lucro da academia (método calcula_lucro)
+* remove_aluno(): Método que remove um aluno usando seu nome e recalcula o lucro da academia (método calcula_lucro).
 * lista_alunos(): Método que imprime todos os alunos da academia, definida na classe Aluno.
-* remove_aluno(): Método que remove um aluno usando seu nome e recalcula o lucro da academia (metodo calcula_lucro).
 * calcula_lucro(): Método que calcula o lucro bruto com a operação: (quantidade de alunos * preço da mensalidade)
 * exibe_lucro(): Método que exibe o lucro previamente calculado.
 
-Podemos identificar o princípio da responsabilidade única quando pessoas com áreas de conhecimento diferentes ou outros colaboradores utilizam o software  com demandas diferentes. No exemplo dado, temos que os responsáveis pela gestão dos alunos e os responsáveis pelas finanças dessa academia, possuem seus métodos na mesma classe.
+Podemos identificar a violação do princípio da responsabilidade única quando pessoas com áreas de conhecimento diferentes ou outros colaboradores utilizam a mesma classe na aplicação com demandas diferentes. No exemplo dado, temos que os responsáveis pela gestão dos alunos e os responsáveis pelas finanças desta academia, possuem seus métodos na mesma classe.
 
 Assim, identificamos duas responsabilidades na classe Academia:
 
 * Gerenciamento de pessoas
 * Gerenciamento de finanças 
 
-Com isso, podemos criar um novo código, aplicando o SRP e resolvendo o possível conflito causado por uma classe que viola esse princípio.
+Com isso, podemos criar uma nova classe aplicando o SRP e assim, resolvendo os possíveis problemas gerados pela violação desse princípio.
 
 ```py
 class Academia:
@@ -116,7 +137,7 @@ Mas, o que ganhamos respeitando esse princípio?
 * As atualizações, melhorias e novos recursos podem ser alocados na classe correta, sem correr o risco de quebrar toda a aplicação (ortogonalidade)
 * As classes bem definidas podem ser reutilizadas de forma simples.
 
-Por fim, esse príncipio não traz benefícios visíveis na aplicação como talvez uma redução no tempo de carregamento ou compilação, porém, é de extrema importância para gerar um código de alto nível e legível para outros programadores que terão responsabilidades em cima dele (melhorias/manutenção)
+Por fim, esse princípio não traz benefícios visíveis na aplicação como talvez uma redução no tempo de carregamento ou compilação, porém, é de extrema importância para gerar um código de alto nível e legível para outros programadores que terão responsabilidades em cima dele (melhorias/manutenção), além de ser um grande exemplo de boas práticas na orientação a objetos.
 
 
 
